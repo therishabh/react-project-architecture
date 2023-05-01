@@ -11,8 +11,10 @@ export const ProposalListPage = () => {
     const [proposals, setProposals] = useState([])
 
     useEffect(() => {
+        setIsLoading(true);
         getProposalList().then(proposals => {
             setProposals(proposals);
+            updateProposalStatus();
         });
     }, []);
 
@@ -22,16 +24,18 @@ export const ProposalListPage = () => {
                 proposal.id === id ? { ...proposal, status } : proposal,
             );
         });
+        setIsLoading(false);
         setProposalStatus(id, status);
     };
 
     return (
         <Page title="Call for Papers">
-            <Loading/>
-            <ProposalList
-                proposals={proposals}
-                onProposalStatusUpdate={() => {}}
-            />
+            {isLoading ? <Loading/> : (
+                <ProposalList
+                    proposals={proposals}
+                    onProposalStatusUpdate={() => {}}
+                />
+            )}
         </Page>
     );
 }

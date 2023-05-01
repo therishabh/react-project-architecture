@@ -5,25 +5,13 @@ import ProposalRow from "../ProposalRow";
 
 import "./ProposalList.css";
 
-import {getTalks} from './../../api/httpApi';
+import {getTalks, getCallForPapers} from './../../api/httpApi';
 
-const ProposalList = () => {
-    
-    const [propList, setPropList] = useState([]);
-
-    useEffect(() => {
-        getAllProposals()
-    },[])
-
-    const getAllProposals = async () => {
-        let data = await getTalks().then((data) => {
-            setPropList(data);
-        })
-    }
+const ProposalList = ({proposals}) => {
 
     return (
         <ul data-testid="proposal-list" className="ProposalList">
-            {propList && propList.map((proposal) => (
+            {proposals && proposals.map((proposal) => (
                 <li
                     key={proposal.id}
                     className="ProposalList__item"
@@ -31,7 +19,7 @@ const ProposalList = () => {
                     <Link
                         key={proposal.id}
                         className="ProposalList__item__link"
-                        to={`/proposals`}
+                        to={`/proposals/${proposal.id}`}
                     >
                         <ProposalRow
                             proposal={proposal}
